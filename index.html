@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GDLearn — Fă o poză. Înțelege răspunsul.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF1F6;
+    --paper-line: #D7DEEA;
+    --ink: #16233D;
+    --ink-soft: #4A5872;
+    --red: #D62828;
+    --yellow: #FFC93C;
+    --green: #2A9D5C;
+    --white: #FFFFFF;
+    --radius: 14px;
+    --shadow: 0 20px 50px -20px rgba(22,35,61,0.25);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 38px, var(--paper-line) 38px 39px);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a { color: inherit; text-decoration:none; }
+  ul { list-style:none; }
+  img { display:block; max-width:100%; height:auto; }
+  svg { display:block; max-width: 100%; }
+  button, input { font-family:'Inter', sans-serif; }
+
+  .wrap{ max-width: 1180px; margin:0 auto; padding: 0 20px; width: 100%; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(238,241,246,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--paper-line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 20px; max-width: 1180px; margin:0 auto; gap: 15px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size: clamp(18px, 4vw, 22px);
+    flex-shrink: 0;
+  }
+  .logo-mark{
+    width: 32px; height:32px; border-radius: 9px;
+    background: var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--yellow); font-family:'Kalam',cursive; font-weight:700; font-size:18px;
+    transform: rotate(-4deg);
+    box-shadow: 0 3px 0 var(--red);
+  }
+  .nav-links{ display:flex; gap: 24px; align-items:center; }
+  .nav-links a{
+    display:flex; align-items:center; gap:6px;
+    font-weight:600; font-size: 14px; color: var(--ink-soft);
+    position:relative; padding: 4px 0;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover{ color: var(--ink); }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px;
+    background: var(--red); transition: width .25s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+
+  .nav-actions{ display:flex; align-items:center; gap:10px; flex-shrink: 0; }
+
+  /* ---------- BUTOANE ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
+    padding: 10px 18px; border-radius: 999px; border: none; cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .btn-primary{ background: var(--ink); color: var(--white); box-shadow: 0 3px 0 var(--red); }
+  .btn-primary:hover{ transform: translateY(-2px); }
+  .btn-primary:active{ transform: translateY(1px); box-shadow: 0 1px 0 var(--red); }
+  .btn-ghost{ background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+  .btn-ghost:hover{ background: var(--ink); color: var(--white); }
+  .btn-sm{ padding: 8px 14px; font-size:13px; }
+  .btn:disabled{ opacity:0.55; cursor:not-allowed; transform:none !important; }
+
+  .user-chip{
+    display:flex; align-items:center; gap:8px; background: var(--white);
+    border: 2px solid var(--ink); border-radius: 999px; padding: 4px 12px 4px 4px;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px;
+    max-width: 180px;
+  }
+  .user-chip span {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .user-chip .avatar-sm{
+    width:24px; height:24px; border-radius:50%; background: var(--red); color:var(--white);
+    display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink: 0;
+  }
+  .logout-x{ background:none; border:none; cursor:pointer; color:var(--ink-soft); display:flex; padding: 4px; }
+  .logout-x:hover{ color: var(--red); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding: 60px 0 40px; }
+  .hero-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items:center; }
+  .badge-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 16px; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Kalam', cursive; font-size:16px; color:var(--red);
+    background: rgba(214,40,40,0.08); padding: 5px 12px; border-radius: 999px;
+    transform: rotate(-1deg);
+  }
+  .badge-free{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; color: var(--ink);
+    background: var(--yellow); padding: 6px 12px; border-radius:999px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    font-size: clamp(32px, 4.5vw, 54px); line-height:1.1; letter-spacing:-0.02em;
+    margin-bottom:18px;
+  }
+  h1 .underline{ position:relative; white-space:nowrap; }
+  h1 .underline svg{ position:absolute; left:0; bottom:-6px; width:100%; height:12px; }
+  .hero p.lead{ font-size: clamp(16px, 2vw, 18px); line-height:1.6; color: var(--ink-soft); max-width: 480px; margin-bottom: 26px; }
+  .hero-cta{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .hero-note{ margin-top:16px; font-size:13px; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+
+  /* ---------- SIGNATURE MOCKUP ---------- */
+  .mock-stage{ position:relative; width: 100%; max-width: 450px; margin: 0 auto; }
+  .mock-photo{
+    position:relative; background: var(--white); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 14px 14px 18px; transform: rotate(1.5deg);
+    border: 1px solid rgba(22,35,61,0.06);
+  }
+  .mock-photo::before{
+    content:'homework_pg1.jpg'; position:absolute; top:-12px; left:16px;
+    background: var(--ink); color:var(--white); font-size:10px; font-family:'Space Grotesk',sans-serif;
+    padding: 3px 8px; border-radius: 5px; letter-spacing:0.03em;
+  }
+  .mock-inner{
+    background: repeating-linear-gradient(to bottom, #fbfbfd 0 32px, #eef0f4 32px 33px);
+    border-radius: 8px; padding: 22px 18px; position:relative; overflow:hidden; min-height: 280px;
+  }
+  .problem-line{ font-family:'Space Grotesk', sans-serif; font-size:15px; color:var(--ink); margin-bottom: 16px; font-weight: 600; }
+  .work-line{ font-size:14px; color:var(--ink-soft); margin-bottom:12px; }
+  .mark{ position:absolute; font-family:'Kalam', cursive; font-weight:700; opacity:0; animation: markIn 0.5s ease forwards; }
+  .mark-check{ color: var(--green); font-size: 32px; }
+  .mark-note{ color: var(--red); font-size: 16px; }
+  .mark-circle{ position:absolute; border: 2.5px solid var(--red); border-radius:50%; opacity:0; animation: markIn .5s ease forwards; }
+  @keyframes markIn{ 0%{ opacity:0; transform: scale(0.6) rotate(-8deg);} 100%{ opacity:1; transform: scale(1) rotate(-4deg);} }
+  .score-chip{
+    position:absolute; top:10px; right:10px; background: var(--yellow); color:var(--ink);
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px;
+    padding:6px 10px; border-radius:999px; opacity:0; animation: markIn .5s ease forwards;
+    animation-delay: 1.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .float-tag{
+    position:absolute; background: var(--white); border-radius:10px; box-shadow: var(--shadow);
+    padding: 8px 12px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:6px;
+    animation: floaty 4s ease-in-out infinite;
+    white-space: nowrap;
+  }
+  .float-tag.t1{ top: -4%; right: -4%; animation-delay:0s; }
+  .float-tag.t2{ bottom: -4%; left: -4%; animation-delay: 1.2s; }
+  @keyframes floaty{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-6px);} }
+  .dot{ width:6px; height:6px; border-radius:50%; background: var(--green); }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: 60px 0; }
+  .section-head{ max-width: 620px; margin-bottom: 40px; }
+  .section-head .eyebrow{ margin-bottom:12px; }
+  h2{ font-family:'Space Grotesk', sans-serif; font-size: clamp(26px, 3.5vw, 38px); font-weight:700; letter-spacing:-0.02em; margin-bottom:12px; line-height: 1.2; }
+  .section-head p{ font-size:16px; color:var(--ink-soft); line-height:1.6; }
+
+  .steps{ display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .step{
+    background: var(--white); border-radius: var(--radius); padding: 24px;
+    box-shadow: 0 8px 24px -12px rgba(22,35,61,0.15); position:relative;
+    border-top: 4px solid var(--red); transition: transform .2s ease;
+  }
+  .step:nth-child(2){ border-top-color: var(--yellow); }
+  .step:nth-child(3){ border-top-color: var(--green); }
+  .step:hover{ transform: translateY(-4px); }
+  .step-num{ font-family:'Kalam',cursive; font-size:38px; color: rgba(22,35,61,0.1); font-weight:700; line-height:1; margin-bottom:8px; }
+  .step h3{ font-family:'Space Grotesk',sans-serif; font-size:18px; margin-bottom:8px; }
+  .step p{ color: var(--ink-soft); font-size:14px; line-height:1.5; }
+
+  /* ---------- FEATURES ---------- */
+  .features{ background: var(--white); border-radius: 20px; width: 100%; }
+  .feat-grid{
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--paper-line);
+    border-radius: 20px; overflow:hidden; border:1px solid var(--paper-line);
+  }
+  .feat{ background: var(--white); padding: 26px 22px; transition: background .2s ease; }
+  .feat:hover{ background: #FAFBFD; }
+  .feat-icon{
+    width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px; flex-shrink: 0;
+  }
+  .feat h3{ font-family:'Space Grotesk',sans-serif; font-size:16px; margin-bottom:6px; }
+  .feat p{ font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ---------- TRY IT (AI) ---------- */
+  .try-card{
+    background: var(--white); border-radius: 20px; box-shadow: var(--shadow);
+    display:grid; grid-template-columns: 1fr 1fr; overflow:hidden; width: 100%;
+  }
+  .try-left{ padding: 30px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
+  .try-left .icon-circle{
+    width:46px; height:46px; border-radius:12px; background: rgba(214,40,40,0.08);
+    display:flex; align-items:center; justify-content:center; color: var(--red);
+  }
+  .try-left h3{ font-family:'Space Grotesk',sans-serif; font-size:20px; }
+  .try-left p{ color: var(--ink-soft); font-size:14px; line-height:1.5; }
+  
+  .upload-zone{
+    border: 2px dashed var(--paper-line); border-radius: 12px; padding: 24px 16px; text-align:center;
+    cursor:pointer; transition: border-color .2s ease, background .2s ease;
+    position: relative;
+  }
+  .upload-zone.locked {
+    cursor: not-allowed;
+    background: rgba(22, 35, 61, 0.02);
+  }
+  .upload-zone:not(.locked):hover, .upload-zone.drag:not(.locked){ border-color: var(--red); background: rgba(214,40,40,0.04); }
+  .upload-zone input{ display:none; }
+  .upload-zone .up-icon{ color: var(--ink-soft); margin: 0 auto 8px; }
+  .upload-zone span{ font-size:13px; color: var(--ink-soft); display: block; }
+  .lock-badge{
+    position: absolute; top: 10px; right: 10px; background: var(--ink); color: var(--yellow);
+    font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px;
+    display: flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .preview-row{ display:flex; align-items:center; gap:10px; width: 100%; }
+  .preview-row img{ width:48px; height:48px; object-fit:cover; border-radius:8px; border:1px solid var(--paper-line); }
+  .preview-row .fname{ font-size:12px; color: var(--ink-soft); flex:1; text-align:left; word-break: break-all; }
+
+  .try-right{ background: var(--paper); border-left: 1px solid var(--paper-line); padding: 30px; display:flex; flex-direction:column; }
+  .result-box{
+    flex:1; background: var(--white); border-radius: 12px; padding: 18px;
+    font-size: 14px; line-height:1.6; color: var(--ink); overflow-y:auto; max-height: 320px; min-height: 200px;
+    border: 1px solid var(--paper-line);
+  }
+  .result-box.empty{ display:flex; align-items:center; justify-content:center; color: var(--ink-soft); text-align:center; font-size:13px; }
+  .result-box .err{ color: var(--red); }
+  .spinner{
+    width:18px; height:18px; border-radius:50%; border: 2.5px solid var(--paper-line); border-top-color: var(--red);
+    animation: spin .8s linear infinite; display:inline-block;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  .loading-row{ display:flex; align-items:center; gap:8px; color: var(--ink-soft); font-size:13px; }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{ background: var(--ink); border-radius: 20px; padding: 50px 24px; text-align:center; position:relative; overflow:hidden; }
+  .final-cta h2{ color: var(--white); }
+  .final-cta p{ color: rgba(255,255,255,0.7); max-width:480px; margin: 0 auto 24px; font-size:16px; }
+  .final-cta .btn-primary{ box-shadow: 0 4px 0 var(--yellow); }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 40px 0; border-top: 1px solid var(--paper-line); margin-top: 30px; }
+  .foot-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .foot-links{ display:flex; gap: 20px; }
+  .foot-links a{ font-size:13px; color: var(--ink-soft); font-weight:500; }
+  .foot-links a:hover{ color: var(--ink); }
+  .copyright{ font-size:12px; color: var(--ink-soft); margin-top: 20px; text-align: center; width: 100%; }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{ opacity:0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+
+  /* ---------- LOGIN MODAL ---------- */
+  .modal-overlay{
+    position: fixed; inset:0; background: rgba(22,35,61,0.65); backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display:flex; align-items:center; justify-content:center; z-index: 200;
+    opacity:0; pointer-events:none; transition: opacity .25s ease; padding: 15px;
+  }
+  .modal-overlay.open{ opacity:1; pointer-events:auto; }
+  .modal-card{
+    background: var(--white); border-radius: 18px; padding: 28px; width: 100%; max-width: 400px;
+    box-shadow: 0 25px 60px -15px rgba(0,0,0,0.35); position:relative;
+    transform: translateY(12px) scale(0.97); transition: transform .25s ease;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 38px, var(--paper-line) 38px 39px);
+  }
+  .modal-overlay.open .modal-card{ transform: translateY(0) scale(1); }
+  .modal-close{
+    position:absolute; top:12px; right:12px; background:none; border:none; cursor:pointer;
+    color: var(--ink-soft); padding:5px; border-radius:6px;
+  }
+  .modal-close:hover{ color: var(--red); background: rgba(214,40,40,0.08); }
+  .modal-head{ display:flex; align-items:center; gap:10px; margin-bottom: 4px; }
+  .modal-head .logo-mark{ width:28px; height:28px; font-size:15px; }
+  .modal-card h3{ font-family:'Space Grotesk',sans-serif; font-size:20px; margin-bottom:4px; }
+  .modal-card .sub{ font-size:13px; color: var(--ink-soft); margin-bottom: 20px; }
+  .field{ margin-bottom: 14px; }
+  .field label{ display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color: var(--ink-soft); margin-bottom:6px; }
+  .field input{
+    width:100%; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--paper-line);
+    font-size:14px; background: var(--white); transition: border-color .2s ease;
+  }
+  .field input:focus{ outline:none; border-color: var(--ink); }
+  .field input.err{ border-color: var(--red); }
+
+  .code-reveal{
+    background: rgba(255,201,60,0.15); border-radius: 10px; padding: 12px; margin: 14px 0;
+    text-align:center; transform: rotate(-0.5deg);
+  }
+  .code-reveal .label{ font-size:11px; color: var(--ink-soft); font-weight:600; margin-bottom:4px; }
+  .code-reveal .code{
+    font-family:'Kalam',cursive; font-weight:700; font-size: 28px; color: var(--red); letter-spacing: 5px;
+  }
+  .code-reveal .hint{ font-size:11px; color: var(--ink-soft); margin-top:4px; }
+
+  .code-input-row{ display:flex; gap:8px; }
+  .code-input-row input{ text-align:center; letter-spacing: 6px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; }
+  .form-msg{ font-size:12px; margin-top:8px; display:flex; align-items:center; gap:6px; }
+  .form-msg.error{ color: var(--red); }
+  .form-msg.success{ color: var(--green); }
+  .modal-card .btn{ width:100%; justify-content:center; margin-top:4px; }
+  .step-hidden{ display:none; }
+  .success-check{
+    width:56px; height:56px; border-radius:50%; background: rgba(42,157,92,0.1); color: var(--green);
+    display:flex; align-items:center; justify-content:center; margin: 4px auto 14px;
+  }
+
+  /* ---------- LOADING SCREEN ---------- */
+  .loading-screen{
+    position: fixed; inset:0; background: var(--ink); z-index: 400;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:20px;
+    opacity:0; pointer-events:none; transition: opacity .3s ease; padding: 20px;
+  }
+  .loading-screen.open{ opacity:1; pointer-events:auto; }
+  .loading-mark{
+    width:64px; height:64px; border-radius:16px; background: var(--yellow);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Kalam',cursive; font-weight:700; font-size:32px; color: var(--ink);
+    animation: pulseMark 1.4s ease-in-out infinite;
+  }
+  @keyframes pulseMark{ 0%,100%{ transform: scale(1) rotate(-3deg); } 50%{ transform: scale(1.06) rotate(3deg); } }
+  .loading-text{
+    font-family:'Space Grotesk',sans-serif; color: var(--white); font-size:15px; font-weight:600;
+    letter-spacing: 0.01em; text-align: center;
+  }
+  .loading-bar-track{
+    width: 200px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.15); overflow:hidden;
+  }
+  .loading-bar-fill{
+    height:100%; width:0%; background: linear-gradient(90deg, var(--red), var(--yellow));
+    border-radius: 999px; animation: fillBar 2s ease forwards;
+  }
+  @keyframes fillBar{ 0%{ width:0%; } 100%{ width:100%; } }
+
+  /* ---------- APP / CHAT SCREEN ---------- */
+  .app-screen{
+    position: fixed; inset:0; background: var(--paper); z-index: 300;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 38px, var(--paper-line) 38px 39px);
+    display:flex; flex-direction:column;
+    opacity:0; transform: translateY(12px); pointer-events:none;
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .app-screen.open{ opacity:1; transform: translateY(0); pointer-events:auto; }
+  
+  .app-top{
+    display:flex; align-items:center; justify-content:space-between; padding: 12px 18px;
+    background: rgba(238,241,246,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--paper-line); flex-shrink: 0;
+  }
+  .app-top .logo{ font-size:18px; }
+  .app-top-right{ display:flex; align-items:center; gap:10px; }
+  
+  .chat-wrap{ flex:1; overflow-y:auto; padding: 20px 0; -webkit-overflow-scrolling: touch; }
+  .chat-inner{ max-width: 760px; margin:0 auto; padding: 0 15px; display:flex; flex-direction:column; gap:14px; }
+  .bubble-row{ display:flex; gap:10px; align-items:flex-start; width: 100%; }
+  .bubble-row.user{ flex-direction: row-reverse; }
+  .bubble-avatar{
+    width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:14px; flex-shrink:0;
+  }
+  .bubble-avatar.ai{ background: var(--ink); color: var(--yellow); transform: rotate(-4deg); }
+  .bubble-avatar.user{ background: var(--red); color: var(--white); }
+  .bubble{
+    max-width: 80%; padding: 12px 14px; border-radius: 12px; font-size:13.5px; line-height:1.55;
+    box-shadow: 0 4px 12px -8px rgba(22,35,61,0.2); word-break: break-word;
+  }
+  .bubble.ai{ background: var(--white); border-top-left-radius:3px; }
+  .bubble.user{ background: var(--ink); color: var(--white); border-top-right-radius:3px; }
+  .bubble img{ border-radius:8px; margin-bottom:8px; max-width:100%; height: auto; max-height: 240px; object-fit: contain; }
+
+  .chat-input-bar{ border-top: 1px solid var(--paper-line); background: rgba(238,241,246,0.95); padding: 12px 15px 16px; flex-shrink: 0; }
+  .chat-input-inner{ max-width: 760px; margin:0 auto; }
+  
+  .attach-preview{
+    display:none; align-items:center; gap:8px; background: var(--white); border-radius:8px;
+    padding: 6px 10px; margin-bottom:8px; font-size:12px; color: var(--ink-soft); border:1px solid var(--paper-line);
+  }
+  .attach-preview img{ width:30px; height:30px; object-fit:cover; border-radius:5px; }
+  .attach-preview button{ margin-left:auto; background:none; border:none; cursor:pointer; color: var(--ink-soft); }
+  .attach-preview button:hover{ color: var(--red); }
+  
+  .chat-input-row{
+    display:flex; align-items:center; gap:8px; background: var(--white); border-radius: 999px;
+    border: 2px solid var(--paper-line); padding: 4px 4px 4px 12px; transition: border-color .2s ease;
+  }
+  .chat-input-row:focus-within{ border-color: var(--ink); }
+  .chat-input-row input[type=text]{ flex:1; border:none; outline:none; font-size:14px; background:transparent; padding: 8px 0; }
+  
+  .icon-btn{
+    width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background: transparent; border:none; cursor:pointer; color: var(--ink-soft); flex-shrink:0;
+    transition: background .2s, color .2s;
+  }
+  .icon-btn:hover{ background: var(--paper); color: var(--ink); }
+  .icon-btn.send{ background: var(--ink); color: var(--white); }
+  .icon-btn.send:hover { background: #233557; }
+  .icon-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .chat-credit{ text-align:center; font-size:10px; color: var(--ink-soft); margin-top:8px; }
+
+  /* ---------- RESPONSIVE GRID OVERRIDES ---------- */
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns: 1fr; gap: 30px; text-align: center; }
+    .hero p.lead { margin: 0 auto 20px; }
+    .hero-cta { justify-content: center; }
+    .hero-note { justify-content: center; }
+    .steps { grid-template-columns: 1fr; gap: 16px; }
+    .feat-grid { grid-template-columns: 1fr; gap: 1px; }
+    .try-card { grid-template-columns: 1fr; }
+    .try-right { border-left: none; border-top: 1px solid var(--paper-line); }
+    .nav-links { display:none; }
+    .float-tag { display:none; }
+  }
+
+  @media (max-width: 500px){
+    nav { padding: 10px 15px; }
+    .nav-actions .btn-ghost { display: none; } /* Păstrăm doar butonul principal pe telefoane mici */
+    .try-left, .try-right { padding: 18px; }
+    .chat-input-row { padding-left: 8px; }
+    .chat-input-row input[type=text] { font-size: 13px; }
+    .bubble { max-width: 88%; }
+    .final-cta { padding: 36px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-mark">G</span>GDLearn</div>
+    <ul class="nav-links">
+      <li><a href="#cum-functioneaza">Cum funcționează</a></li>
+      <li><a href="#functii">Materii</a></li>
+      <li><a href="#incearca">Testează acum</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <button class="btn btn-ghost btn-sm" id="loginTrigger" onclick="openLogin()">Conectare</button>
+      <button class="btn btn-primary" onclick="handleAuthAction()">Începe gratuit</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="badge-row">
+          <div class="eyebrow">✎ tutorele tău AI, mereu treaz</div>
+          <div class="badge-free">100% gratuit</div>
+        </div>
+        <h1>Fă o poză temei.<br>Primești
+          <span class="underline">nota și explicația<svg viewBox="0 0 300 16" preserveAspectRatio="none"><path d="M2 10 Q 75 2, 150 9 T 298 8" stroke="#D62828" stroke-width="4" fill="none" stroke-linecap="round"/></svg></span>.
+        </h1>
+        <p class="lead">GDLearn se uită la exercițiul tău, îl corectează ca un profesor bun și îți arată exact unde ai greșit — în câteva secunde, la orice materie.</p>
+        <div class="hero-cta" id="heroCtaContainer">
+          <button class="btn btn-primary" onclick="handleAuthAction('Să începem! Te rugăm să te conectezi pentru a folosi aplicația.')">Trimite prima poză →</button>
+          <a href="#cum-functioneaza" class="btn btn-ghost">Vezi detalii</a>
+        </div>
+        <p class="hero-note">Fără card bancar · Fără cont complicat · Complet gratuit</p>
+      </div>
+
+      <div class="mock-stage">
+        <div class="mock-photo">
+          <div class="mock-inner">
+            <div class="problem-line">2. Rezolvă: 3x + 7 = 22</div>
+            <div class="work-line">3x = 22 − 7</div>
+            <div class="work-line">3x = 15</div>
+            <div class="work-line">x = 5</div>
+            <div class="mark mark-check" style="top:100px; left:200px; animation-delay:0.9s;">✓</div>
+            <div class="mark-circle" style="top:130px; left:15px; width:100px; height:28px; animation-delay:1.3s;"></div>
+            <div class="score-chip">9.5 / 10 ⭐</div>
+          </div>
+        </div>
+        <div class="float-tag t1"><span class="dot"></span> Analizat în 4s</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cum-functioneaza">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">cum funcționează</div>
+        <h2>Trei pași simpli</h2>
+        <p>Nu trebuie să scrii nimic. Doar arată-i lui GDLearn ce ai lucrat în caiet.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Fotografiezi tema</h3>
+          <p>Faci poză exercițiului din caiet, manual sau din fișa de la școală — orice materie, orice format.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>GDLearn analizează</h3>
+          <p>Citește rezolvarea ta pas cu pas și identifică exact unde raționamentul e corect sau greșit.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Primești rezultatul</h3>
+          <p>Notă, corecturi marcate ca la profesor și o explicație clară, ca să înțelegi — nu doar să copiezi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="functii">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">ce poate face</div>
+        <h2>Mai mult decât un corector</h2>
+      </div>
+      <div class="features reveal">
+        <div class="feat-grid">
+          <div class="feat">
+            <h3>Trimiți orice poză</h3>
+            <p>Din caiet, manual, tablă sau fișă de lucru — GDLearn citește scrisul de mână fără probleme.</p>
+          </div>
+          <div class="feat">
+            <h3>Corectură instantă</h3>
+            <p>Primești rezultatul marcat vizual: ce e corect, ce e greșit și unde exact a apărut eroarea.</p>
+          </div>
+          <div class="feat">
+            <h3>Explicații pas cu pas</h3>
+            <p>Nu primești doar răspunsul corect, ci și motivul din spatele lui, explicat pe înțelesul tău.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="incearca">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">profesorul tău online</div>
+        <h2>Fă o probă chiar acum</h2>
+        <p>Încarcă o imagine cu tema ta și asistentul nostru îți va oferi corectarea completă pe loc.</p>
+      </div>
+
+      <div class="try-card reveal">
+        <div class="try-left">
+          <div class="icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <h3>Trimite tema pentru analiză</h3>
+          <p>Trage o imagine sau selectează-o din dispozitiv. Serviciul este securizat și rapid.</p>
+
+          <div class="upload-zone locked" id="dropzone" onclick="handleZoneClick(event)">
+            <div class="lock-badge" id="lockBadge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Necesită Conectare
+            </div>
+            <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)" disabled>
+            <svg class="up-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span id="uploadText">Conectează-te pentru a putea încărca imagini</span>
+          </div>
+
+          <div class="preview-row" id="previewRow" style="display:none;">
+            <img id="imagePreview" src="" alt="Preview">
+            <div class="fname" id="fileName">imagine.jpg</div>
+            <button class="btn btn-primary btn-sm" id="btnAnalyze" onclick="analyzeUploadedPhoto()">Analizează poza →</button>
+          </div>
+        </div>
+
+        <div class="try-right">
+          <div class="result-box empty" id="analysisResult">
+            <div>Rezultatul analizei tale va apărea aici după conectare și trimiterea imaginii...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="logo"><span class="logo-mark">G</span>GDLearn</div>
+      <div class="foot-links">
+        <a href="#cum-functioneaza">Despre noi</a>
+        <a href="#functii">Materii</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 GDLearn. Toate drepturile rezervate.</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeLogin()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    
+    <div id="modalStep1">
+      <div class="modal-head">
+        <div class="logo-mark">G</div>
+        <h3>Conectare Securizată</h3>
+      </div>
+      <p class="sub" id="loginModalSubText">Introdu adresa de email pentru a primi codul tău de acces.</p>
+      <div class="field">
+        <label>Email-ul tău</label>
+        <input type="email" id="loginEmail" placeholder="nume@exemplu.ro" required>
+      </div>
+      <button class="btn btn-primary" onclick="sendLoginCode()">Trimite-mi codul →</button>
+    </div>
+
+    <div id="modalStep2" class="step-hidden">
+      <div class="modal-head">
+        <div class="logo-mark">G</div>
+        <h3>Verificare Cod</h3>
+      </div>
+      <p class="sub">Copiază și validează codul generat automat pentru tine.</p>
+      
+      <div class="code-reveal">
+        <div class="label">CODUL TĂU GENERAT:</div>
+        <div class="code" id="generatedCode">----</div>
+      </div>
+
+      <div class="field">
+        <label>Introdu codul</label>
+        <div class="code-input-row">
+          <input type="text" id="verifyCode" placeholder="0000" maxlength="4">
+        </div>
+        <div id="loginMsg" class="form-msg"></div>
+      </div>
+      <button class="btn btn-primary" onclick="verifyLoginCode()">Confirmă Codul ✓</button>
+    </div>
+
+    <div id="modalStep3" class="step-hidden">
+      <div class="success-check">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 style="text-align:center;">Conectat cu succes!</h3>
+      <p class="sub" style="text-align:center;">Acum poți încărca fișiere sau poți folosi chat-ul interactiv.</p>
+      <button class="btn btn-primary" onclick="launchAppScreen()">Intră în Chat-ul Inteligent ⚡</button>
+    </div>
+  </div>
+</div>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-mark">G</div>
+  <div class="loading-text" id="loadingProgressText">Se configurează panoul securizat...</div>
+  <div class="loading-bar-track">
+    <div class="loading-bar-fill" id="loadingBarFill"></div>
+  </div>
+</div>
+
+<div class="app-screen" id="appScreen">
+  <div class="app-top">
+    <div class="logo"><span class="logo-mark">G</span>GDLearn App</div>
+    <div class="app-top-right">
+      <div class="user-chip">
+        <div class="avatar-sm" id="userAvatar">U</div>
+        <span id="userEmailLabel">utilizator@domain.com</span>
+      </div>
+      <button class="logout-x" onclick="logout()" title="Deconectare">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-wrap" id="chatWrap">
+    <div class="chat-inner" id="chatContainer">
+      <div class="bubble-row">
+        <div class="bubble-avatar ai">G</div>
+        <div class="bubble ai">
+          Salut! Sunt asistentul tău GDLearn. Încarcă o poză cu rezolvarea ta direct folosind butonul de atașare sau trimite-mi un mesaj text. Sunt gata să te ajut!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input-bar">
+    <div class="chat-input-inner">
+      <div class="attach-preview" id="chatAttachPreview">
+        <img id="chatAttachImg" src="" alt="Atașament">
+        <span id="chatAttachName">tema.jpg</span>
+        <button onclick="clearChatAttachment()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="chat-input-row">
+        <button class="icon-btn" onclick="document.getElementById('chatFileInput').click()" title="Atașează o poză">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <input type="file" id="chatFileInput" accept="image/*" style="display:none;" onchange="handleChatFileSelect(event)">
+        <input type="text" id="chatTextInput" placeholder="Întreabă-mă ceva despre exercițiu..." onkeydown="if(event.key === 'Enter') sendChatMessage()">
+        <button class="icon-btn send" id="btnSendChat" onclick="sendChatMessage()" title="Trimite">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_KEY = "AQ.Ab8RN6JfvOvEUvcRevt-JyEY6vUj4Xd-DKrk-wLhSrM-xudgXQ";
+  const API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+
+  let currentUser = null;
+  let currentFileBase64 = null;
+  let currentFileName = "";
+  let chatAttachedFileBase64 = null;
+  let chatAttachedFileName = "";
+
+  // ---------- ANIMATIE REVEAL LA SCROLL ----------
+  const reveals = document.querySelectorAll('.reveal');
+  function handleScroll() {
+    reveals.forEach(rev => {
+      const top = rev.getBoundingClientRect().top;
+      if (top < window.innerHeight - 50) {
+        rev.classList.add('in');
+      }
+    });
+  }
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('load', handleScroll);
+
+  // ---------- RESTRICȚIONARE ȘI AUTENTIFICARE ----------
+  function handleAuthAction(customMsg) {
+    if(currentUser) {
+      openAppDirectly();
+    } else {
+      openLogin(customMsg);
+    }
+  }
+
+  // Interceptăm click-ul pe zona de upload
+  function handleZoneClick(e) {
+    if(!currentUser) {
+      e.preventDefault();
+      e.stopPropagation();
+      openLogin("Pentru a putea adăuga poze cu tema ta, este necesar să te conectezi.");
+    }
+  }
+
+  function openLogin(msgText) {
+    if(msgText) {
+      document.getElementById('loginModalSubText').innerText = msgText;
+    } else {
+      document.getElementById('loginModalSubText').innerText = "Introdu adresa de email pentru a primi codul tău de acces.";
+    }
+    document.getElementById('loginModal').classList.add('open');
+    document.getElementById('modalStep1').classList.remove('step-hidden');
+    document.getElementById('modalStep2').classList.add('step-hidden');
+    document.getElementById('modalStep3').classList.add('step-hidden');
+  }
+
+  function closeLogin() {
+    document.getElementById('loginModal').classList.remove('open');
+  }
+
+  function sendLoginCode() {
+    const email = document.getElementById('loginEmail').value.trim();
+    if(!email || !email.includes('@')) {
+      alert('Te rugăm să introduci o adresă de email corectă.');
+      return;
+    }
+    currentUser = email;
+    const code = Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('generatedCode').innerText = code;
+    
+    document.getElementById('modalStep1').classList.add('step-hidden');
+    document.getElementById('modalStep2').classList.remove('step-hidden');
+  }
+
+  function verifyLoginCode() {
+    const entered = document.getElementById('verifyCode').value.trim();
+    const generated = document.getElementById('generatedCode').innerText;
+    const msg = document.getElementById('loginMsg');
+
+    if(entered === generated) {
+      msg.className = "form-msg success";
+      msg.innerText = "Cod validat! Se procesează conexiunea...";
+      
+      setTimeout(() => {
+        document.getElementById('modalStep2').classList.add('step-hidden');
+        document.getElementById('modalStep3').classList.remove('step-hidden');
+      }, 600);
+    } else {
+      msg.className = "form-msg error";
+      msg.innerText = "Codul introdus este greșit.";
+    }
+  }
+
+  function launchAppScreen() {
+    closeLogin();
+    const loading = document.getElementById('loadingScreen');
+    loading.classList.add('open');
+    
+    let currentPct = 0;
+    const bar = document.getElementById('loadingBarFill');
+    const txt = document.getElementById('loadingProgressText');
+    
+    const interval = setInterval(() => {
+      currentPct += 10;
+      bar.style.width = currentPct + "%";
+      
+      if(currentPct >= 100) {
+        clearInterval(interval);
+        loading.classList.remove('open');
+        document.getElementById('appScreen').classList.add('open');
+        enableUploadZone(); // Deblocăm zona din pagina principală la conectare
+        updateUIForAuthenticatedUser();
+      }
+    }, 80);
+  }
+
+  // Deblocarea zonei de upload
+  function enableUploadZone() {
+    const zone = document.getElementById('dropzone');
+    if(zone) {
+      zone.classList.remove('locked');
+      const lockBadge = document.getElementById('lockBadge');
+      if(lockBadge) lockBadge.remove();
+      
+      document.getElementById('fileInput').removeAttribute('disabled');
+      document.getElementById('uploadText').innerHTML = "Trage imaginea sau <strong>apasă aici</strong> pentru selectare";
+    }
+  }
+
+  function updateUIForAuthenticatedUser() {
+    const navActions = document.getElementById('navActions');
+    navActions.innerHTML = `
+      <button class="btn btn-primary btn-sm" onclick="openAppDirectly()">
+        Deschide Chat-ul ⚡
+      </button>
+      <div class="user-chip">
+        <div class="avatar-sm">${currentUser.charAt(0).toUpperCase()}</div>
+        <span>${currentUser}</span>
+      </div>
+    `;
+
+    document.getElementById('userEmailLabel').innerText = currentUser;
+    document.getElementById('userAvatar').innerText = currentUser.charAt(0).toUpperCase();
+
+    const heroCtas = document.getElementById('heroCtaContainer');
+    if(heroCtas) {
+      heroCtas.innerHTML = `
+        <button class="btn btn-primary" onclick="openAppDirectly()">Intră în Chat-ul Inteligent ⚡</button>
+        <a href="#cum-functioneaza" class="btn btn-ghost">Cum funcționează</a>
+      `;
+    }
+  }
+
+  function openAppDirectly() {
+    document.getElementById('appScreen').classList.add('open');
+  }
+
+  function logout() {
+    document.getElementById('appScreen').classList.remove('open');
+    currentUser = null;
+    location.reload();
+  }
+
+  // ---------- TRIMITERE IMAGINE PROBĂ DIN PAGINA PRINCIPALĂ ----------
+  function handleFileSelect(e) {
+    if(!currentUser) return;
+    if(e.target.files.length) {
+      processUploadedFile(e.target.files[0]);
+    }
+  }
+
+  function processUploadedFile(file) {
+    if(!file.type.startsWith('image/')) {
+      alert('Te rugăm să alegi un fișier de tip imagine.');
+      return;
+    }
+    currentFileName = file.name;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      currentFileBase64 = evt.target.result.split(',')[1];
+      document.getElementById('imagePreview').src = evt.target.result;
+      document.getElementById('fileName').innerText = file.name;
+      document.getElementById('previewRow').style.display = 'flex';
+      document.getElementById('dropzone').style.display = 'none';
+    }
+    reader.readAsDataURL(file);
+  }
+
+  async function analyzeUploadedPhoto() {
+    if(!currentFileBase64 || !currentUser) return;
+    
+    const resultBox = document.getElementById('analysisResult');
+    resultBox.classList.remove('empty');
+    resultBox.innerHTML = `
+      <div class="loading-row">
+        <div class="spinner"></div>
+        <span>Profesorul virtual îți analizează tema acum...</span>
+      </div>
+    `;
+
+    const promptText = "Ești un profesor indulgent și extrem de bine pregătit. Analizează imaginea atașată. Dacă conține o rezolvare, identifică ce este corect și ce este greșit, notează simbolic lucrarea cu o notă de la 1 la 10 și oferă o explicație caldă, extrem de clară și detaliată a modului corect de rezolvare pas cu pas. Folosește formatare text curată Markdown, bold și liste pentru ușurința citirii.";
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: promptText },
+              { inlineData: { mimeType: "image/jpeg", data: currentFileBase64 } }
+            ]
+          }]
+        })
+      });
+      
+      const data = await response.json();
+      if(data.candidates && data.candidates[0].content.parts[0].text) {
+        resultBox.innerHTML = formatMarkdown(data.candidates[0].content.parts[0].text);
+      } else {
+        throw new Error("Nu s-a putut procesa corect imaginea.");
+      }
+    } catch (error) {
+      resultBox.innerHTML = `<span class="err">S-a produs o eroare la analiză. Asigură-te că fișierul este o imagine validă.</span>`;
+    }
+  }
+
+  // ---------- CHAT APP INTERACTIV ----------
+  function handleChatFileSelect(e) {
+    if(e.target.files.length) {
+      const file = e.target.files[0];
+      if(!file.type.startsWith('image/')) {
+        alert('Poți trimite doar imagini.');
+        return;
+      }
+      chatAttachedFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        chatAttachedFileBase64 = evt.target.result.split(',')[1];
+        document.getElementById('chatAttachImg').src = evt.target.result;
+        document.getElementById('chatAttachName').innerText = file.name;
+        document.getElementById('chatAttachPreview').style.display = 'flex';
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function clearChatAttachment() {
+    chatAttachedFileBase64 = null;
+    chatAttachedFileName = "";
+    document.getElementById('chatAttachPreview').style.display = 'none';
+    document.getElementById('chatFileInput').value = "";
+  }
+
+  async function sendChatMessage() {
+    const textInput = document.getElementById('chatTextInput');
+    const query = textInput.value.trim();
+    
+    if(!query && !chatAttachedFileBase64) return;
+
+    const chatContainer = document.getElementById('chatContainer');
+
+    let userBubbleHtml = `
+      <div class="bubble-row user">
+        <div class="bubble-avatar user">${currentUser.charAt(0).toUpperCase()}</div>
+        <div class="bubble user">
+    `;
+    if(chatAttachedFileBase64) {
+      userBubbleHtml += `<img src="data:image/jpeg;base64,${chatAttachedFileBase64}" alt="Fișier"><br>`;
+    }
+    userBubbleHtml += `${query || "Am atașat o imagine pentru rezolvare."}</div></div>`;
+    
+    chatContainer.innerHTML += userBubbleHtml;
+    scrollChatToBottom();
+
+    textInput.value = "";
+    const activeFileBase64 = chatAttachedFileBase64;
+    clearChatAttachment();
+
+    const tempId = "loading_" + Date.now();
+    chatContainer.innerHTML += `
+      <div class="bubble-row" id="${tempId}">
+        <div class="bubble-avatar ai">G</div>
+        <div class="bubble ai">
+          <div class="loading-row">
+            <div class="spinner"></div>
+            <span>Se redactează răspunsul...</span>
+          </div>
+        </div>
+      </div>
+    `;
+    scrollChatToBottom();
+
+    const promptInstructions = "Ești un asistent academic de top în limba română. Răspunde politicos, cald și structurat folosind formatare Markdown.";
+    let parts = [{ text: promptInstructions + "\n\nÎntrebare: " + (query || "Explică rezolvarea pentru imaginea trimisă.") }];
+    if(activeFileBase64) {
+      parts.push({ inlineData: { mimeType: "image/jpeg", data: activeFileBase64 } });
+    }
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ parts: parts }] })
+      });
+      
+      const data = await response.json();
+      const loadingBubble = document.getElementById(tempId);
+      if(loadingBubble) loadingBubble.remove();
+
+      if(data.candidates && data.candidates[0].content.parts[0].text) {
+        chatContainer.innerHTML += `
+          <div class="bubble-row">
+            <div class="bubble-avatar ai">G</div>
+            <div class="bubble ai">${formatMarkdown(data.candidates[0].content.parts[0].text)}</div>
+          </div>
+        `;
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      const loadingBubble = document.getElementById(tempId);
+      if(loadingBubble) loadingBubble.remove();
+      chatContainer.innerHTML += `
+        <div class="bubble-row">
+          <div class="bubble-avatar ai">G</div>
+          <div class="bubble ai" style="color:var(--red);">Serviciul întâmpină o problemă de conexiune. Te rugăm să reîncerci în câteva clipe.</div>
+        </div>
+      `;
+    }
+    scrollChatToBottom();
+  }
+
+  function scrollChatToBottom() {
+    const wrap = document.getElementById('chatWrap');
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  function formatMarkdown(text) {
+    let html = text;
+    html = html.replace(/\n/g, '<br>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/^\s*[\*\-]\s+(.*?)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
+    return html;
+  }
+</script>
+</body>
+</html>
