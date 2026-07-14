@@ -6,7 +6,7 @@
 <title>GDLearn — Fă o poză. Înțelege răspunsul.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="icon" type="image/png" href="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png">
-<link rel="apple-touch-icon" href="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png">
+<link class="apple-touch-icon" href="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -125,7 +125,7 @@
   }
   h1{
     font-family:'Space Grotesk', sans-serif; font-weight:700;
-    font-size: clamp(38px, 5vw, 60px); line-height:1.05; letter-spacing:-0.02em;
+    font-size: clamp(34px, 5vw, 60px); line-height:1.05; letter-spacing:-0.02em;
     margin-bottom:22px;
   }
   h1 .underline{ position:relative; white-space:nowrap; }
@@ -135,11 +135,11 @@
   .hero-note{ margin-top:18px; font-size:14px; color:var(--ink-soft); display:flex; align-items:center; gap:8px; }
 
   /* ---------- SIGNATURE MOCKUP ---------- */
-  .mock-stage{ position:relative; }
+  .mock-stage{ position:relative; width: 100%; max-width: 480px; margin: 0 auto; }
   .mock-photo{
     position:relative; background: var(--white); border-radius: var(--radius);
     box-shadow: var(--shadow); padding: 18px 18px 22px; transform: rotate(2deg);
-    border: 1px solid rgba(22,35,61,0.06);
+    border: 1px solid rgba(22,35,61,0.06); width: 100%;
   }
   .mock-photo::before{
     content:'homework_pg1.jpg'; position:absolute; top:-14px; left:20px;
@@ -166,7 +166,7 @@
   .float-tag{
     position:absolute; background: var(--white); border-radius:12px; box-shadow: var(--shadow);
     padding: 10px 14px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px;
-    animation: floaty 4s ease-in-out infinite;
+    animation: floaty 4s ease-in-out infinite; z-index: 5;
   }
   .float-tag.t1{ top: -6%; right: -8%; animation-delay:0s; }
   .float-tag.t2{ bottom: -6%; left: -6%; animation-delay: 1.2s; }
@@ -177,7 +177,7 @@
   section{ padding: 90px 0; }
   .section-head{ max-width: 620px; margin-bottom: 56px; }
   .section-head .eyebrow{ margin-bottom:16px; }
-  h2{ font-family:'Space Grotesk', sans-serif; font-size: clamp(30px,3.6vw,42px); font-weight:700; letter-spacing:-0.02em; margin-bottom:14px; }
+  h2{ font-family:'Space Grotesk', sans-serif; font-size: clamp(26px,3.6vw,42px); font-weight:700; letter-spacing:-0.02em; margin-bottom:14px; }
   .section-head p{ font-size:17px; color:var(--ink-soft); line-height:1.6; }
 
   .steps{ display:grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
@@ -218,28 +218,6 @@
   }
   .chip:hover{ background: var(--ink); color:var(--white); transform: rotate(-2deg) scale(1.05); }
 
-  /* ---------- TESTIMONIALS ---------- */
-  .test-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 26px; }
-  .test{ background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: 0 8px 24px -14px rgba(22,35,61,0.18); }
-  .test .quote{ font-size:15px; line-height:1.6; color: var(--ink); margin-bottom:20px; }
-  .test .who{ display:flex; align-items:center; gap:12px; }
-  .avatar{
-    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--white); font-size:15px;
-  }
-  .who-name{ font-weight:600; font-size:14px; }
-  .who-sub{ font-size:12px; color:var(--ink-soft); }
-  .stars{ color: var(--yellow); font-size:14px; margin-bottom:12px; letter-spacing:2px; }
-
-  /* ---------- ABOUT ---------- */
-  .about-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 44px; }
-  .about-item{
-    background: var(--white); border-radius: var(--radius); padding: 28px;
-    box-shadow: 0 8px 24px -14px rgba(22,35,61,0.16);
-  }
-  .about-item h3{ font-family:'Space Grotesk',sans-serif; font-size:17px; margin-bottom:8px; }
-  .about-item p{ font-size:14px; color: var(--ink-soft); line-height:1.55; }
-
   .spinner{
     width:20px; height:20px; border-radius:50%; border: 3px solid var(--paper-line); border-top-color: var(--red);
     animation: spin .8s linear infinite; display:inline-block;
@@ -247,23 +225,13 @@
   @keyframes spin{ to{ transform: rotate(360deg); } }
   .loading-row{ display:flex; align-items:center; gap:10px; color: var(--ink-soft); font-size:14px; }
 
-  /* ---------- FINAL CTA ---------- */
-  .final-cta{ background: var(--ink); border-radius: 28px; padding: 70px 50px; text-align:center; position:relative; overflow:hidden; }
-  .final-cta h2{ color: var(--white); }
-  .final-cta p{ color: rgba(255,255,255,0.7); max-width:480px; margin: 0 auto 30px; font-size:17px; }
-  .final-cta .btn-primary{ box-shadow: 0 4px 0 var(--yellow); }
-
   /* ---------- FOOTER ---------- */
   footer{ padding: 50px 0 40px; border-top: 1px solid var(--paper-line); margin-top: 40px; }
   .foot-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
   .foot-links{ display:flex; gap: 28px; }
   .foot-links a{ font-size:14px; color: var(--ink-soft); font-weight:500; }
   .foot-links a:hover{ color: var(--ink); }
-  .copyright{ font-size:13px; color: var(--ink-soft); margin-top: 24px; }
-
-  /* ---------- REVEAL ---------- */
-  .reveal{ opacity:0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.in{ opacity:1; transform: translateY(0); }
+  .copyright{ font-size:13px; color: var(--ink-soft); margin-top: 24px; width: 100%; text-align: center; }
 
   /* ---------- LOGIN MODAL ---------- */
   .modal-overlay{
@@ -296,28 +264,10 @@
   }
   .field input:focus{ outline:none; border-color: var(--ink); }
   .field input.err{ border-color: var(--red); }
-
-  .code-reveal{
-    background: rgba(255,201,60,0.18); border-radius: 12px; padding: 16px 18px; margin: 18px 0;
-    text-align:center; transform: rotate(-1deg); position:relative;
-  }
-  .code-reveal .label{ font-size:12px; color: var(--ink-soft); font-weight:600; margin-bottom:6px; }
-  .code-reveal .code{
-    font-family:'Kalam',cursive; font-weight:700; font-size: 32px; color: var(--red); letter-spacing: 6px;
-  }
-  .code-reveal .hint{ font-size:11.5px; color: var(--ink-soft); margin-top:6px; }
-
-  .code-input-row{ display:flex; gap:10px; }
-  .code-input-row input{ text-align:center; letter-spacing: 8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; }
   .form-msg{ font-size:13px; margin-top:10px; display:flex; align-items:center; gap:6px; }
   .form-msg.error{ color: var(--red); }
   .form-msg.success{ color: var(--green); }
   .modal-card .btn{ width:100%; justify-content:center; margin-top:6px; }
-  .step-hidden{ display:none; }
-  .success-check{
-    width:64px; height:64px; border-radius:50%; background: rgba(42,157,92,0.12); color: var(--green);
-    display:flex; align-items:center; justify-content:center; margin: 6px auto 18px;
-  }
 
   /* ---------- LOADING SCREEN ---------- */
   .loading-screen{
@@ -331,13 +281,6 @@
     display:flex; align-items:center; justify-content:center; object-fit:cover; padding:8px;
     animation: pulseMark 1.4s ease-in-out infinite;
   }
-  .badge-owner{
-    display:inline-flex; align-items:center; gap:6px;
-    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:12.5px; color: var(--ink-soft);
-  }
-  .badge-owner svg{ color: var(--yellow); flex-shrink:0; }
-  .badge-owner.on-dark{ color: rgba(255,255,255,0.75); }
-  .badge-owner.on-dark svg{ color: var(--yellow); }
   @keyframes pulseMark{ 0%,100%{ transform: scale(1) rotate(-3deg); } 50%{ transform: scale(1.08) rotate(3deg); } }
   .loading-text{
     font-family:'Space Grotesk',sans-serif; color: var(--white); font-size:17px; font-weight:600;
@@ -348,7 +291,10 @@
   }
   .loading-bar-fill{
     height:100%; width:0%; background: linear-gradient(90deg, var(--red), var(--yellow));
-    border-radius: 999px; animation: fillBar 2.1s ease forwards;
+    border-radius: 999px;
+  }
+  .loading-screen.open .loading-bar-fill{
+    animation: fillBar 2.1s ease forwards;
   }
   @keyframes fillBar{ 0%{ width:0%; } 100%{ width:100%; } }
 
@@ -379,12 +325,11 @@
   .bubble-avatar.user{ background: var(--red); color: var(--white); }
   .bubble{
     max-width: 70%; padding: 14px 16px; border-radius: 14px; font-size:14.5px; line-height:1.6;
-    box-shadow: 0 6px 18px -12px rgba(22,35,61,0.25);
+    box-shadow: 0 6px 18px -12px rgba(22,35,61,0.25); word-wrap: break-word; white-space: pre-line;
   }
   .bubble.ai{ background: var(--white); border-top-left-radius:4px; }
   .bubble.user{ background: var(--ink); color: var(--white); border-top-right-radius:4px; }
-  .bubble img{ border-radius:8px; margin-bottom:8px; max-width:220px; }
-  .bubble .loading-row{ margin:0; }
+  .bubble img{ border-radius:8px; margin-bottom:8px; max-width:100%; height: auto; }
 
   .chat-input-bar{ border-top: 1px solid var(--paper-line); background: rgba(238,241,246,0.95); padding: 16px 24px 20px; }
   .chat-input-inner{ max-width: 760px; margin:0 auto; }
@@ -410,15 +355,21 @@
   .icon-btn:disabled{ opacity:0.4; cursor:not-allowed; }
   .chat-credit{ text-align:center; font-size:11.5px; color: var(--ink-soft); margin-top:12px; }
 
-  @media (max-width: 700px){ .bubble{ max-width: 84%; } }
-
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
-    .hero-grid{ grid-template-columns: 1fr; }
-    .steps, .feat-grid, .test-grid{ grid-template-columns: 1fr; }
-    .about-grid{ grid-template-columns: 1fr; }
+    .hero-grid{ grid-template-columns: 1fr; text-align: center; gap: 40px; }
+    .hero p.lead { margin: 0 auto 32px; }
+    .hero-cta { justify-content: center; }
+    .hero-note { justify-content: center; }
+    .steps, .feat-grid { grid-template-columns: 1fr; }
     .nav-links{ display:none; }
     .float-tag{ display:none; }
+  }
+  @media (max-width: 700px){ 
+    .bubble{ max-width: 85%; } 
+    nav { padding: 12px 16px; }
+    .wrap { padding: 0 16px; }
+    .btn { padding: 10px 18px; font-size: 14px; }
   }
 </style>
 </head>
@@ -434,9 +385,6 @@
       <li><a href="#materii">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5S5 4 8 4s5 1.5 5 1.5V19S11 17.5 8 17.5 3 19 3 19V5.5zM21 5.5S19 4 16 4s-5 1.5-5 1.5V19S13 17.5 16 17.5 21 19 21 19V5.5z"/></svg>
         Materii</a></li>
-      <li><a href="#despre">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
-        Despre</a></li>
     </ul>
     <div class="nav-actions" id="navActions">
       <button class="btn btn-ghost btn-sm" id="loginTrigger" onclick="openLogin()">
@@ -449,7 +397,6 @@
 </header>
 
 <main>
-  <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
@@ -481,7 +428,7 @@
             <div class="work-line">3x = 22 − 7</div>
             <div class="work-line">3x = 15</div>
             <div class="work-line">x = 5</div>
-            <div class="mark mark-check" style="top:118px; left:230px; animation-delay:0.9s;">✓</div>
+            <div class="mark mark-check" style="top:118px; right:40px; animation-delay:0.9s;">✓</div>
             <div class="mark-circle" style="top:150px; left:20px; width:120px; height:34px; animation-delay:1.3s;"></div>
             <div class="mark mark-note" style="top:186px; left:20px; animation-delay:1.5s;">bine calculat!</div>
             <div class="score-chip">9.5 / 10 ⭐</div>
@@ -496,26 +443,25 @@
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
   <section id="cum-functioneaza">
     <div class="wrap">
-      <div class="section-head reveal">
+      <div class="section-head">
         <div class="eyebrow">cum funcționează</div>
         <h2>Trei pași, ca și cum ai avea un meditator în buzunar</h2>
         <p>Nu trebuie să scrii nimic. Doar arată-i lui GDLearn ce ai făcut.</p>
       </div>
       <div class="steps">
-        <div class="step reveal">
+        <div class="step">
           <div class="step-num">01</div>
           <h3>Fotografiezi tema</h3>
           <p>Faci poză exercițiului din caiet, manual sau din fișa de la școală — orice materie, orice format.</p>
         </div>
-        <div class="step reveal">
+        <div class="step">
           <div class="step-num">02</div>
           <h3>GDLearn analizează</h3>
           <p>Citește rezolvarea ta pas cu pas și identifică exact unde raționamentul e corect sau greșit.</p>
         </div>
-        <div class="step reveal">
+        <div class="step">
           <div class="step-num">03</div>
           <h3>Primești rezultatul</h3>
           <p>Notă, corecturi marcate ca la profesor și o explicație clară, ca să înțelegi — nu doar să copiezi.</p>
@@ -524,15 +470,14 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
   <section id="functii">
     <div class="wrap">
-      <div class="section-head reveal">
+      <div class="section-head">
         <div class="eyebrow">ce poate face</div>
         <h2>Mai mult decât un corector</h2>
         <p>GDLearn e construit să te ajute să înveți efectiv, nu doar să bifezi tema.</p>
       </div>
-      <div class="features reveal">
+      <div class="features">
         <div class="feat-grid">
           <div class="feat">
             <div class="feat-icon" style="background:rgba(214,40,40,0.1); color:var(--red);">
@@ -555,557 +500,271 @@
             <h3>Explicații pas cu pas</h3>
             <p>Nu primești doar răspunsul corect, ci și motivul din spatele lui, explicat pe înțelesul tău.</p>
           </div>
-          <div class="feat">
-            <div class="feat-icon" style="background:rgba(22,35,61,0.08); color:var(--ink);">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5S5 4 8 4s5 1.5 5 1.5V19S11 17.5 8 17.5 3 19 3 19V5.5zM21 5.5S19 4 16 4s-5 1.5-5 1.5V19S13 17.5 16 17.5 21 19 21 19V5.5z"/></svg>
-            </div>
-            <h3>Toate materiile</h3>
-            <p>Matematică, fizică, chimie, română, engleză, programare — un singur loc pentru toate temele.</p>
-          </div>
-          <div class="feat">
-            <div class="feat-icon" style="background:rgba(214,40,40,0.1); color:var(--red);">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 6h6v6"/></svg>
-            </div>
-            <h3>Îți urmărește progresul</h3>
-            <p>Vezi la ce capitole greșești des și primești exerciții suplimentare exact acolo.</p>
-          </div>
-          <div class="feat">
-            <div class="feat-icon" style="background:rgba(255,201,60,0.25); color:#8a6d00;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5A9 9 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z"/></svg>
-            </div>
-            <h3>Disponibil oricând</h3>
-            <p>La 11 seara înainte de teză sau duminică dimineața — GDLearn e mereu pornit, gratuit.</p>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SUBJECTS -->
   <section id="materii">
-    <div class="wrap subjects-wrap reveal">
+    <div class="wrap subjects-wrap">
       <div class="eyebrow" style="margin-left:auto;margin-right:auto;">materii acoperite</div>
       <h2>De la ecuații la eseuri</h2>
       <p style="color:var(--ink-soft); max-width:520px; margin: 0 auto;">Orice temă care poate fi fotografiată, poate fi corectată.</p>
       <div class="chips">
-        <span class="chip">Matematică</span>
-        <span class="chip">Fizică</span>
-        <span class="chip">Chimie</span>
-        <span class="chip">Programare</span>
-        <span class="chip">Limba Română</span>
-        <span class="chip">Engleză</span>
-        <span class="chip">Biologie</span>
-        <span class="chip">Istorie</span>
-        <span class="chip">Geografie</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="pareri">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">elevi care îl folosesc deja</div>
-        <h2>Nu ne crede pe cuvânt</h2>
-      </div>
-      <div class="test-grid">
-        <div class="test reveal">
-          <div class="stars">★★★★★</div>
-          <p class="quote">Fac poză la tema de mate și în câteva secunde știu dacă am greșit ceva. M-a scăpat de multe corecturi la clasă.</p>
-          <div class="who">
-            <div class="avatar" style="background:#D62828;">A</div>
-            <div><div class="who-name">Andrei P.</div><div class="who-sub">clasa a X-a</div></div>
-          </div>
-        </div>
-        <div class="test reveal">
-          <div class="stars">★★★★★</div>
-          <p class="quote">Îmi place că nu îmi dă doar răspunsul, îmi explică de ce am greșit la eseul de română. Am înțeles regula, nu doar am corectat-o.</p>
-          <div class="who">
-            <div class="avatar" style="background:#2A9D5C;">M</div>
-            <div><div class="who-name">Maria I.</div><div class="who-sub">clasa a XI-a</div></div>
-          </div>
-        </div>
-        <div class="test reveal">
-          <div class="stars">★★★★★</div>
-          <p class="quote">Îl folosesc și pentru codul de la informatică, nu doar teme scrise de mână. Fac poză la ecran și îmi zice unde e bug-ul.</p>
-          <div class="who">
-            <div class="avatar" style="background:#FFC93C;">D</div>
-            <div><div class="who-name">David T.</div><div class="who-sub">clasa a XII-a</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="despre">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div class="eyebrow">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
-          despre GDLearn
-        </div>
-        <h2>Ce este, de fapt, GDLearn?</h2>
-        <p>GDLearn e un tutore AI cu care vorbești ca într-un chat obișnuit. Îi scrii o întrebare sau îi trimiți o poză cu tema ta, iar el îți explică — pe scurt și pe înțelesul tău — ce e corect, ce ai greșit și de ce, la orice materie. Nu e un motor de căutare și nici un simplu răspuns copiat: e o conversație, disponibilă gratuit, oricând ai nevoie de o mână de ajutor.</p>
-      </div>
-      <div class="about-grid reveal">
-        <div class="about-item">
-          <div class="feat-icon" style="background:rgba(214,40,40,0.1); color:var(--red);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.5A8.38 8.38 0 0 1 3 11.5a8.5 8.5 0 0 1 17 0z"/></svg>
-          </div>
-          <h3>Chat, nu formulare</h3>
-          <p>Scrii liber, ca și cum ai vorbi cu un coleg mai bun la materie.</p>
-        </div>
-        <div class="about-item">
-          <div class="feat-icon" style="background:rgba(255,201,60,0.25); color:#8a6d00;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
-          </div>
-          <h3>Poze, direct în chat</h3>
-          <p>Atașezi o poză cu exercițiul chiar în conversație, fără pagini separate.</p>
-        </div>
-        <div class="about-item">
-          <div class="feat-icon" style="background:rgba(42,157,92,0.12); color:var(--green);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12.5l2.5 2.5L16 9"/><circle cx="12" cy="12" r="9"/></svg>
-          </div>
-          <h3>100% gratuit</h3>
-          <p>Fără card, fără abonament — doar un cont simplu, cu cod de confirmare.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section>
-    <div class="wrap">
-      <div class="final-cta reveal">
-        <h2>Următoarea temă e prima ta întrebare.</h2>
-        <p>Fără cont complicat, fără instalări, fără card. Deschizi chatul, scrii sau trimiți o poză, primești răspunsul — gratuit.</p>
-        <a href="#" class="btn btn-primary" onclick="openLogin(); return false;">Deschide chatul →</a>
+        <div class="chip">Matematică</div>
+        <div class="chip">Fizică</div>
+        <div class="chip">Chimie</div>
+        <div class="chip">Limba Română</div>
+        <div class="chip">Biologie</div>
+        <div class="chip">Istorie</div>
+        <div class="chip">Informatică</div>
       </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="logo"><img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo">GDLearn</div>
-      <ul class="foot-links">
-        <li><a href="#cum-functioneaza">Cum funcționează</a></li>
-        <li><a href="#materii">Materii</a></li>
-        <li><a href="#incearca">Testează acum</a></li>
-        <li><a href="#pareri">Păreri</a></li>
-      </ul>
-    </div>
-    <p class="copyright">© 2026 GDLearn. Tema ta, corectată cu grijă. Gratuit pentru orice elev.</p>
-    <p class="copyright">Credits: A.Gruia - Owner</p>
+  <div class="wrap foot-grid">
+    <div class="logo"><img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo">GDLearn</div>
+    <div class="copyright">&copy; 2026 GDLearn. Toate drepturile rezervate.</div>
   </div>
 </footer>
 
-<!-- LOGIN MODAL -->
-<div class="modal-overlay" id="modalOverlay">
+<div class="modal-overlay" id="loginModal">
   <div class="modal-card">
-    <button class="modal-close" onclick="closeLogin()" aria-label="Închide">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-
-    <!-- STEP 1: email + username -->
-    <div id="loginStep1">
-      <div class="modal-head"><img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo"><h3>Conectează-te</h3></div>
-      <p class="sub">Gratuit, fără parolă — primești un cod de confirmare.</p>
-      <div class="field">
-        <label>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          Email
-        </label>
-        <input type="email" id="loginEmail" placeholder="nume@exemplu.com">
-      </div>
-      <div class="field">
-        <label>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
-          Username
-        </label>
-        <input type="text" id="loginUsername" placeholder="ex: andrei_p">
-      </div>
-      <div class="form-msg error" id="step1Msg" style="display:none;"></div>
-      <button class="btn btn-primary" onclick="submitStep1()">Conectează-te</button>
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-head">
+      <img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png">
+      <h3>Bun venit pe GDLearn</h3>
     </div>
-
-    <!-- STEP 2: code shown + confirm -->
-    <div id="loginStep2" class="step-hidden">
-      <div class="modal-head"><img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo"><h3>Confirmă codul</h3></div>
-      <p class="sub">Introdu codul afișat mai jos ca să confirmi contul.</p>
-      <div class="code-reveal">
-        <div class="label">codul tău de confirmare</div>
-        <div class="code" id="generatedCode">000000</div>
-        <div class="hint">(demo — în varianta reală, codul e trimis pe email)</div>
-      </div>
-      <div class="field">
-        <label>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="3.5"/><path d="M10.5 12.5L19 4M16 8l2 2M13 11l2 2"/></svg>
-          Introdu codul
-        </label>
-        <div class="code-input-row">
-          <input type="text" id="codeInput" maxlength="6" placeholder="••••••">
-        </div>
-      </div>
-      <div class="form-msg error" id="step2Msg" style="display:none;"></div>
-      <button class="btn btn-primary" onclick="confirmCode()">Confirmă</button>
+    <p class="sub">Introdu un nume de utilizator pentru a începe sesiunea de chat.</p>
+    <div class="field">
+      <label>Numele tău</label>
+      <input type="text" id="usernameInput" placeholder="Ex: Andrei" value="Elev">
     </div>
-
-    <!-- STEP 3: success -->
-    <div id="loginStep3" class="step-hidden" style="text-align:center;">
-      <div class="success-check">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      </div>
-      <h3>Bine ai venit, <span id="successName"></span>!</h3>
-      <p class="sub">Ești conectat. Poți trimite acum teme spre corectare.</p>
-    </div>
+    <button class="btn btn-primary" onclick="startApp()">Accesează Chatul gratuit</button>
   </div>
 </div>
 
-<!-- LOADING SCREEN -->
 <div class="loading-screen" id="loadingScreen">
-  <img class="loading-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo">
-  <div class="loading-text" id="loadingText">Se pregătește sala de clasă...</div>
-  <div class="loading-bar-track"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+  <div class="loading-mark">
+    <img src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" style="width:100%;height:100%;object-fit:contain;">
+  </div>
+  <div class="loading-text">Se configurează spațiul tău de învățare...</div>
+  <div class="loading-bar-track">
+    <div class="loading-bar-fill"></div>
+  </div>
 </div>
 
-<!-- CHAT APP SCREEN -->
 <div class="app-screen" id="appScreen">
   <div class="app-top">
-    <div class="logo"><img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png" alt="GDLearn logo">GDLearn</div>
+    <div class="logo">
+      <img class="logo-mark" src="https://www.image2url.com/r2/default/images/1784029721108-fd58d97e-62f6-40f9-9c3c-cd03863bd9b4.png">
+      <span>GDLearn AI</span>
+    </div>
     <div class="app-top-right">
-      <div class="user-chip" id="chatUserChip"></div>
-      <button class="btn btn-ghost btn-sm" onclick="closeChatApp()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        Înapoi la site
+      <div class="user-chip">
+        <div class="avatar-sm" id="userAvatar">E</div>
+        <span id="userChipName">Elev</span>
+      </div>
+      <button class="logout-x" onclick="logoutApp()" title="Ieșire">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
   </div>
 
   <div class="chat-wrap" id="chatWrap">
-    <div class="chat-inner" id="chatInner"></div>
+    <div class="chat-inner" id="chatContainer">
+      <div class="bubble-row ai">
+        <div class="bubble-avatar ai">AI</div>
+        <div class="bubble ai">Salut! Sunt tutorele tău GDLearn. Trimite-mi o întrebare sau încarcă o poză cu exercițiul tău, iar eu îl voi corecta și îți voi explica totul pas cu pas!</div>
+      </div>
+    </div>
   </div>
 
   <div class="chat-input-bar">
     <div class="chat-input-inner">
       <div class="attach-preview" id="attachPreview">
-        <img id="attachPreviewImg" alt="">
-        <span id="attachName"></span>
-        <button onclick="removeAttachment()" aria-label="Șterge poza">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
+        <img id="previewImg" src="">
+        <span id="previewName">imagine.jpg</span>
+        <button onclick="clearAttachment()">✕</button>
       </div>
       <div class="chat-input-row">
-        <button class="icon-btn" onclick="document.getElementById('chatFileInput').click()" aria-label="Atașează poză">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <input type="text" id="chatInput" placeholder="Pune o întrebare sau scrie cerința problemei..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
+        <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Adaugă poză">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </button>
-        <input type="file" id="chatFileInput" accept="image/*" style="display:none;">
-        <input type="text" id="chatTextInput" placeholder="Scrie o întrebare sau atașează o poză cu tema...">
-        <button class="icon-btn send" id="chatSendBtn" onclick="sendChatMessage()" aria-label="Trimite">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <button class="icon-btn send" id="sendBtn" onclick="sendMessage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <p class="chat-credit">GDLearn · Credits: A.Gruia - Owner</p>
+      <div class="chat-credit">Securizat prin Grow AI Platform</div>
     </div>
   </div>
 </div>
 
 <script>
-  /* ---------- reveal on scroll ---------- */
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el=>io.observe(el));
+  // Configurare API Groq/Grow direct în cod
+  const GROW_API_KEY = "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";
+  let attachedImageBase64 = null;
 
-  /* ---------- LOGIN FLOW ---------- */
-  let pendingCode = null;
-  let pendingUsername = null;
-
-  function openLogin(){
-    document.getElementById('modalOverlay').classList.add('open');
-    document.getElementById('loginStep1').classList.remove('step-hidden');
-    document.getElementById('loginStep2').classList.add('step-hidden');
-    document.getElementById('loginStep3').classList.add('step-hidden');
+  function openLogin() {
+    document.getElementById('loginModal').classList.add('open');
   }
-  function closeLogin(){ document.getElementById('modalOverlay').classList.remove('open'); }
-  document.getElementById('modalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='modalOverlay') closeLogin(); });
-
-  function submitStep1(){
-    const email = document.getElementById('loginEmail').value.trim();
-    const username = document.getElementById('loginUsername').value.trim();
-    const msg = document.getElementById('step1Msg');
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if(!emailOk || !username){
-      msg.style.display='flex';
-      msg.textContent = !emailOk ? 'Introdu un email valid.' : 'Introdu un username.';
-      return;
-    }
-    msg.style.display='none';
-    pendingUsername = username;
-    pendingCode = String(Math.floor(100000 + Math.random()*900000));
-    document.getElementById('generatedCode').textContent = pendingCode;
-    document.getElementById('loginStep1').classList.add('step-hidden');
-    document.getElementById('loginStep2').classList.remove('step-hidden');
-    document.getElementById('codeInput').value = '';
-    document.getElementById('codeInput').focus();
+  function closeLogin() {
+    document.getElementById('loginModal').classList.remove('open');
   }
 
-  function confirmCode(){
-    const val = document.getElementById('codeInput').value.trim();
-    const msg = document.getElementById('step2Msg');
-    if(val !== pendingCode){
-      msg.style.display='flex';
-      msg.textContent = 'Cod greșit. Verifică și încearcă din nou.';
-      return;
-    }
-    msg.style.display='none';
-    document.getElementById('loginStep2').classList.add('step-hidden');
-    document.getElementById('loginStep3').classList.remove('step-hidden');
-    document.getElementById('successName').textContent = pendingUsername;
-    setTimeout(()=>{
-      closeLogin();
-      renderLoggedIn(pendingUsername);
-      launchLoadingThenChat(pendingUsername);
-    }, 1400);
-  }
-
-  /* ---------- LOADING TRANSITION → CHAT ---------- */
-  const loadingMessages = [
-    "Se pregătește sala de clasă...",
-    "GDLearn își ascute creionul roșu...",
-    "Se deschide caietul tău...",
-    "Aproape gata..."
-  ];
-
-  function launchLoadingThenChat(username){
-    const loadingScreen = document.getElementById('loadingScreen');
-    const loadingText = document.getElementById('loadingText');
-    const fill = document.getElementById('loadingBarFill');
-    fill.style.animation = 'none';
-    void fill.offsetWidth;
-    fill.style.animation = 'fillBar 2.1s ease forwards';
-
-    let i = 0;
-    loadingText.textContent = loadingMessages[0];
-    const textInterval = setInterval(()=>{
-      i = (i + 1) % loadingMessages.length;
-      loadingText.textContent = loadingMessages[i];
-    }, 550);
-
-    loadingScreen.classList.add('open');
-    setTimeout(()=>{
-      clearInterval(textInterval);
-      loadingScreen.classList.remove('open');
-      openChatApp(username);
+  function startApp() {
+    const name = document.getElementById('usernameInput').value.trim() || "Elev";
+    document.getElementById('userChipName').innerText = name;
+    document.getElementById('userAvatar').innerText = name.charAt(0).toUpperCase();
+    
+    closeLogin();
+    document.getElementById('loadingScreen').classList.add('open');
+    
+    setTimeout(() => {
+      document.getElementById('loadingScreen').classList.remove('open');
+      document.getElementById('appScreen').classList.add('open');
+      document.body.style.overflow = "hidden"; // Oprește scroll-ul paginii din spate în aplicație
     }, 2200);
   }
 
-  function openChatApp(username){
-    document.getElementById('appScreen').classList.add('open');
-    const chip = document.getElementById('chatUserChip');
-    chip.innerHTML = `<span class="avatar-sm">${username.charAt(0).toUpperCase()}</span> ${username}`;
-    if(!chatStarted){
-      chatStarted = true;
-      appendBubble('ai', `Salut, ${username}! Sunt GDLearn. Trimite-mi o poză cu o temă sau întreabă-mă orice despre o materie.`);
-    }
-  }
-  function closeChatApp(){ document.getElementById('appScreen').classList.remove('open'); }
-
-  function renderLoggedIn(username){
-    const nav = document.getElementById('navActions');
-    const initial = username.charAt(0).toUpperCase();
-    nav.innerHTML = `
-      <div class="user-chip">
-        <span class="avatar-sm">${initial}</span> ${username}
-        <button class="logout-x" onclick="logout()" aria-label="Deconectare">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-      <a href="#incearca" class="btn btn-primary">Trimite o temă</a>
-    `;
-  }
-  function logout(){
-    const nav = document.getElementById('navActions');
-    nav.innerHTML = `
-      <button class="btn btn-ghost btn-sm" id="loginTrigger" onclick="openLogin()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
-        Conectare
-      </button>
-      <a href="#incearca" class="btn btn-primary">Începe gratuit</a>
-    `;
+  function logoutApp() {
+    document.getElementById('appScreen').classList.remove('open');
+    document.body.style.overflow = "auto";
   }
 
-  /* ---------- UPLOAD + AI ANALYSIS ---------- */
-  let uploadedBase64 = null;
-  let uploadedMediaType = null;
+  function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const fileInput = document.getElementById('fileInput');
-  fileInput.addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    uploadedMediaType = file.type;
+    document.getElementById('previewName').innerText = file.name;
+    
     const reader = new FileReader();
-    reader.onload = () => {
-      uploadedBase64 = reader.result.split(',')[1];
-      document.getElementById('previewImg').src = reader.result;
-      document.getElementById('fname').textContent = file.name;
-      document.getElementById('previewRow').style.display = 'flex';
-      document.getElementById('uploadLabel').textContent = 'Poză încărcată — poți schimba oricând';
-      document.getElementById('analyzeBtn').disabled = false;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  // ─────────────────────────────────────────────────────────────
-  // Cheia AI: când acest site rulează ca artifact în Claude, cererea
-  // către api.anthropic.com este autorizată automat — nu trebuie
-  // adăugată nicio cheie. Dacă găzduiești acest fișier pe un server
-  // propriu, în afara Claude, adaugă aici antetul tău de autorizare:
-  //   headers: { "content-type": "application/json",
-  //              "x-api-key": "CHEIA_TA_ANTHROPIC_AICI",
-  //              "anthropic-version": "2023-06-01" }
-  // ─────────────────────────────────────────────────────────────
-  const AI_MODEL = "claude-sonnet-4-6";
-
-  /* ---------- CHAT INTERFACE ---------- */
-  let chatStarted = false;
-  let chatHistory = []; // {role, content: [blocks]} sent to the API
-  let chatAttachment = null; // {base64, mediaType, dataUrl, name}
-
-  function appendBubble(role, text, imgDataUrl){
-    const inner = document.getElementById('chatInner');
-    const row = document.createElement('div');
-    row.className = 'bubble-row ' + role;
-    const avatar = document.createElement('div');
-    avatar.className = 'bubble-avatar ' + role;
-    avatar.textContent = role === 'ai' ? 'G' : 'T';
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble ' + role;
-    let html = '';
-    if(imgDataUrl) html += `<img src="${imgDataUrl}" alt="poză trimisă">`;
-    html += (text || '').replace(/\n/g, '<br>');
-    bubble.innerHTML = html;
-    row.appendChild(avatar);
-    row.appendChild(bubble);
-    inner.appendChild(row);
-    document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
-    return bubble;
-  }
-
-  document.getElementById('chatFileInput').addEventListener('change', (e)=>{
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      chatAttachment = {
-        base64: reader.result.split(',')[1],
-        mediaType: file.type,
-        dataUrl: reader.result,
-        name: file.name
-      };
-      document.getElementById('attachPreviewImg').src = reader.result;
-      document.getElementById('attachName').textContent = file.name;
+    reader.onload = function(e) {
+      attachedImageBase64 = e.target.result;
+      document.getElementById('previewImg').src = e.target.result;
       document.getElementById('attachPreview').style.display = 'flex';
     };
     reader.readAsDataURL(file);
-  });
-  function removeAttachment(){
-    chatAttachment = null;
+  }
+
+  function clearAttachment() {
+    attachedImageBase64 = null;
+    document.getElementById('fileInput').value = "";
     document.getElementById('attachPreview').style.display = 'none';
-    document.getElementById('chatFileInput').value = '';
   }
 
-  document.getElementById('chatTextInput').addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter'){ e.preventDefault(); sendChatMessage(); }
-  });
+  async function sendMessage() {
+    const inputEl = document.getElementById('chatInput');
+    const text = inputEl.value.trim();
+    if (!text && !attachedImageBase64) return;
 
-  async function sendChatMessage(){
-    const textInput = document.getElementById('chatTextInput');
-    const text = textInput.value.trim();
-    if(!text && !chatAttachment) return;
+    const chatContainer = document.getElementById('chatContainer');
+    const sendBtn = document.getElementById('sendBtn');
 
-    const sendBtn = document.getElementById('chatSendBtn');
+    // 1. Randare mesaj utilizator în interfață
+    const userRow = document.createElement('div');
+    userRow.className = "bubble-row user";
+    
+    let innerHTML = `<div class="bubble-avatar user">${document.getElementById('userAvatar').innerText}</div>`;
+    innerHTML += `<div class="bubble user">`;
+    if (attachedImageBase64) {
+      innerHTML += `<img src="${attachedImageBase64}"><br>`;
+    }
+    innerHTML += `${text}</div>`;
+    userRow.innerHTML = innerHTML;
+    chatContainer.appendChild(userRow);
+
+    // Resetare inputuri
+    inputEl.value = "";
+    const savedImage = attachedImageBase64;
+    clearAttachment();
+    scrollChat();
+
+    // 2. Creare bubble de tip "loading/gândire" pentru AI
     sendBtn.disabled = true;
+    const aiRow = document.createElement('div');
+    aiRow.className = "bubble-row ai";
+    aiRow.innerHTML = `
+      <div class="bubble-avatar ai">AI</div>
+      <div class="bubble ai" id="currentLoadingBubble">
+        <div class="loading-row"><span class="spinner"></span> GDLearn analizează cerința ta...</div>
+      </div>
+    `;
+    chatContainer.appendChild(aiRow);
+    scrollChat();
 
-    appendBubble('user', text, chatAttachment ? chatAttachment.dataUrl : null);
+    // 3. Apel către API-ul Groq Cloud (Folosind modelul Llama 3.2 Vision capabil de procesare OCR / Imagini)
+    try {
+      let messages = [];
+      
+      if (savedImage) {
+        // Dacă avem imagine, o trimitem în format multimodal
+        messages.push({
+          role: "user",
+          content: [
+            { type: "text", text: text || "Corectează acest exercițiu din imagine, oferă-i o notă orientativă și explică greșelile pas cu pas în limba română." },
+            { type: "image_url", image_url: { url: savedImage } }
+          ]
+        });
+      } else {
+        // Altfel, trimitem doar text simplu
+        messages.push({
+          role: "user",
+          content: text
+        });
+      }
 
-    const userContent = [];
-    if(chatAttachment){
-      userContent.push({ type:'image', source:{ type:'base64', media_type: chatAttachment.mediaType, data: chatAttachment.base64 } });
-    }
-    userContent.push({ type:'text', text: text || 'Analizează te rog poza trimisă.' });
-    chatHistory.push({ role:'user', content: userContent });
+      // Adăugăm comportamentul de profesor în System prompt
+      messages.unshift({
+        role: "system",
+        content: "Ești GDLearn, un tutore AI prietenos și foarte bine pregătit din România. Sarcina ta este să corectezi temele elevilor, să le dai o notă de la 1 la 10 dacă e vorba de o rezolvare și să le explici logic, pas cu pas, unde au greșit sau cum se rezolvă corect. Răspunde întotdeauna clar și în limba română."
+      });
 
-    textInput.value = '';
-    removeAttachment();
-
-    const thinkingBubble = appendBubble('ai', '<span class="loading-row"><span class="spinner"></span> GDLearn scrie...</span>');
-
-    try{
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Authorization": `Bearer ${GROW_API_KEY}`,
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          model: AI_MODEL,
-          max_tokens: 1000,
-          system: "Ești GDLearn, un tutore AI prietenos pentru elevi, care răspunde în limba română. Când primești o poză cu o temă, o corectezi ca un profesor bun: spui ce e corect, ce e greșit și de ce, dai o notă orientativă din 10 și explici pas cu pas rezolvarea corectă. Când primești doar o întrebare, răspunzi clar și pe scurt, adaptat nivelului de liceu.",
-          messages: chatHistory
+          model: savedImage ? "llama-3.2-11b-vision-preview" : "llama3-8b-8192",
+          messages: messages,
+          temperature: 0.5
         })
       });
-      const data = await response.json();
-      if(!response.ok){
-        throw new Error((data && data.error && data.error.message) || "Eroare la conectarea cu AI-ul.");
+
+      if (!response.ok) {
+        throw new Error("Eroare la comunicarea cu serverul.");
       }
-      const replyText = (data.content || []).map(b => b.text || "").join("\n").trim() || "Nu am înțeles bine, poți reformula?";
-      thinkingBubble.innerHTML = replyText.replace(/\n/g, "<br>");
-      chatHistory.push({ role:'assistant', content:[{ type:'text', text: replyText }] });
-    }catch(err){
-      thinkingBubble.innerHTML = '<span class="err" style="color:var(--red);">A apărut o problemă: ' + (err.message || 'încearcă din nou') + '</span>';
-      chatHistory.pop();
-    }finally{
+
+      const data = await response.json();
+      const aiResponseText = data.choices[0].message.content;
+
+      // Actualizare bubble cu răspunsul real de la AI
+      const currentLoadingBubble = document.getElementById('currentLoadingBubble');
+      currentLoadingBubble.removeAttribute('id');
+      currentLoadingBubble.innerText = aiResponseText;
+
+    } catch (error) {
+      console.error(error);
+      const currentLoadingBubble = document.getElementById('currentLoadingBubble');
+      if (currentLoadingBubble) {
+        currentLoadingBubble.removeAttribute('id');
+        currentLoadingBubble.innerHTML = `<span style="color:var(--red);">Ups! A apărut o problemă la conexiunea cu serverul AI. Te rog încearcă din nou.</span>`;
+      }
+    } finally {
       sendBtn.disabled = false;
-      document.getElementById('chatWrap').scrollTop = document.getElementById('chatWrap').scrollHeight;
+      scrollChat();
     }
   }
 
-  async function analyzePhoto(){
-    if(!uploadedBase64) return;
-    const resultBox = document.getElementById('resultBox');
-    const btn = document.getElementById('analyzeBtn');
-    btn.disabled = true;
-    resultBox.classList.remove('empty');
-    resultBox.innerHTML = '<div class="loading-row"><span class="spinner"></span> GDLearn analizează tema...</div>';
-
-    try{
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: AI_MODEL,
-          max_tokens: 1000,
-          messages: [{
-            role: "user",
-            content: [
-              { type: "image", source: { type: "base64", media_type: uploadedMediaType || "image/jpeg", data: uploadedBase64 } },
-              { type: "text", text: "Ești GDLearn, un profesor AI prietenos. Uită-te la poza acestui exercițiu școlar. Spune în română, pe scurt: 1) ce materie și exercițiu pare să fie, 2) dacă rezolvarea e corectă sau unde exact greșește, 3) o notă orientativă din 10, 4) o explicație clară pas cu pas a modului corect de rezolvare. Folosește un ton cald, ca un profesor bun, fără să fii sec sau robotic." }
-            ]
-          }]
-        })
-      });
-      const data = await response.json();
-      if(!response.ok){
-        throw new Error((data && data.error && data.error.message) || "Eroare la analiză.");
-      }
-      const text = (data.content || []).map(b => b.text || "").join("\n").trim();
-      resultBox.innerHTML = text.replace(/\n/g, "<br>") || "Nu am primit un răspuns clar — încearcă din nou cu o poză mai clară.";
-    }catch(err){
-      resultBox.innerHTML = '<span class="err">A apărut o problemă la analiză: ' + (err.message || 'încearcă din nou') + '</span>';
-    }finally{
-      btn.disabled = false;
-    }
+  function scrollChat() {
+    const chatWrap = document.getElementById('chatWrap');
+    chatWrap.scrollTop = chatWrap.scrollHeight;
   }
 </script>
 
